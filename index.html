@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
   <title>TAGGER</title>
 </head>
 
@@ -13,15 +14,11 @@
   <p>
     This should extract tags, author name, and the main content of a document
   </p>
-  <p>
-    newline test\r\n
-    newline test\r\n
-    newline test\r\n
-  </p>
+
   <form action="http://google.com" id="uploadForm" onsubmit="event.preventDefault()">
     <div>
       <label for="selected">Select files to extract</label>
-      <input type="file" name="selected" id="selected" accept=".doc,.docx,.pdf,.txt" multiple>
+      <input type="file" name="selected" id="selected" accept=".txt" multiple>
     </div>
     <span>Definitions</span>
     <div>
@@ -38,7 +35,7 @@
     </div>
     <button id="startButton">Start</button>
   </form>
-  <div class="result"></div>
+  <pre class="result"></pre>
   <script src="main.js"></script>
 </body>
 
