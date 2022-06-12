@@ -7,8 +7,10 @@
 let volatileStorage = {};
 
 class Story {
-  constructor(title, author, commissioner, summary, tags) {
+  constructor(title, subtitle, author, commissioner, summary, tags) {
     this.title = title; //string
+    this.subtitle = subtitle;
+    this.chapter = chapter;
     this.author = author; //string
     this.commissioner = commissioner; //string
     this.summary = summary; //string
@@ -52,12 +54,13 @@ start.addEventListener("click", function () {
       //   .replaceAll("<center>", "")
       //   .split(/\r?\n/); // header is defined as being in between the 1st center element, in /n separated array
 
-      // fallback, detect elements, if not found ask for input
+      //! fallback, detect elements, if not found ask for input
       // how? match? or by line
       // if (header.length === 4) {
       // like this if by line method
       // }
 
+      //=
       // this works but maybe hard to scale
       // get values by matching literals and lines, but maybe can match using look around regex
       // let testHead = result
@@ -74,18 +77,38 @@ start.addEventListener("click", function () {
       // const author = header[2].replace(/[bB]y\ /, "");
       // console.log(`Author is ${author}`);
 
+      //=
       // matching with look around
       const header = result
         .slice(centerMarkers[0].index, centerMarkers[1].index)
         .replaceAll("<center>", "");
       console.log(header);
 
+      // title detection
       const title = header.split(/\r?\n/)[0]; // assume title is always the first line
-      // console.log(title);
+      console.log(`The title is ${title}`);
+      let reducedHeader = header.replace(title, "");
 
-      // chapter/part detection
-      console.log(header.match(/[cC]hapter |[pP]art/));
-      // if (header.match()){}
+      //  author detection
+      const author = reducedHeader.match(/(?<=^[bB]y ).*(?=\n|$)/); // for some reason is null // ^ newline meta escape causing problems
+      console.log(`The author is ${author}`);
+      reducedHeader = header.replace(author, "");
+
+      // commissioner detection
+      let commissioner = reducedHeader.match(
+        /(?<=^[fF]or |[sS]ponsored [bB]y ).*\n/
+      );
+      if (commissioner === null) {
+        commissioner = "not found";
+      } else {
+        console.log(`The commissioner is ${commissioner}`);
+      }
+
+      // chapter/part detection, add additional
+      // console.log(header.match(/[cC]hapter:? \d*|[pP]art:? \d/)); // return null if not found
+
+      // chapter name // leave this for last? after other parts are sliced since its the most complicated
+      // console.log(/(?<=\: )(.*)\n/)
 
       // get values
 
