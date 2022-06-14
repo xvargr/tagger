@@ -87,23 +87,62 @@ start.addEventListener("click", function () {
       // title detection
       const title = header.split(/\r?\n/)[0]; // assume title is always the first line
       console.log(`The title is ${title}`);
-      let reducedHeader = header.replace(title, "");
+      let reducedHeader = header.replace(
+        new RegExp("\n?^" + title + "$\r?\n", "m"),
+        ""
+      ); // remove the title line from header string block // don't forget the flags 🤦🏻‍♂️
 
       //  author detection
-      const author = reducedHeader.match(/(?<=^[bB]y ).*(?=\n|$)/); // for some reason is null // ^ newline meta escape causing problems
+      const author = reducedHeader.match(/(?<=^by ).*(?=\n|$)/im); // for some reason is null // ^ newline meta escape causing problems // no, it was caused by the missing multiline m tag
       console.log(`The author is ${author}`);
-      reducedHeader = header.replace(author, "");
+      reducedHeader = reducedHeader.replace(/\n?^by .*(\n|$)/im, ""); // removes author line
 
       // commissioner detection
       let commissioner = reducedHeader.match(
-        /(?<=^[fF]or |[sS]ponsored [bB]y ).*\n/
+        /(?<=^for \b|sponsored by \b).*(?=\n|$)/im
       );
-      if (commissioner === null) {
-        commissioner = "not found";
+      reducedHeader = reducedHeader.replace(
+        /\n?^(for |sponsored by )\b.*(\n|$)/im,
+        ""
+      );
+      console.log(`The commissioner is ${commissioner}`);
+
+      // TODO some parts can be behind titles // add epilogue etc special case
+      // chapter / part detection
+      let part = reducedHeader.match(/(?<=part |chapter )(\d*)(?=\n|$|:| )/gim);
+      if (part === null) {
+        part = reducedHeader.match(/(epilogue|prologue)/gi);
+        reducedHeader = reducedHeader.replace(
+          /\n\.*(epilogue|prologue).*\n/,
+          ""
+        );
       } else {
-        console.log(`The commissioner is ${commissioner}`);
+        console.log(`part/chapter ${part}`);
+        reducedHeader = reducedHeader.replace(
+          /\n?[\W]?(part |chapter )\d*[\W]?/im,
+          ""
+        );
       }
 
+      // TODO not finished, punctuation removal from end of string, sometimes epilogue is detected
+      // sometimes there's a comma at the end even though none in sting // not sure what changed, it doesn't do that anymore
+      // chapter name if any detection
+      const subtitle = reducedHeader.trim().match(/(?<=\b).*(?=\n|$)/m);
+      // console.log(typeof subtitle);
+      // console.dir(subtitle);
+      // console.log(subtitle);
+      // console.log(subtitle[0]);
+      console.log(`subtitle is ${subtitle}`);
+      reducedHeader = reducedHeader.replace(
+        new RegExp("\n?" + subtitle + "\n?"),
+        ""
+      );
+
+      if (reducedHeader.match(/\w/gm)) {
+        console.log(reducedHeader);
+      } else {
+        console.log("reducedHeader is empty");
+      }
       // chapter/part detection, add additional
       // console.log(header.match(/[cC]hapter:? \d*|[pP]art:? \d/)); // return null if not found
 
