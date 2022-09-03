@@ -6,37 +6,38 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
-  <title>TAGGER</title>
+  <title>DRAC TAGGER</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+  </style>
 </head>
 
 <body>
-  <h1>TAGGER</h1>
+  <h1>DRAC TAGGER</h1>
   <p>
-    This should extract tags, author name, and the main content of a document
+    Select one or multiple .txt file and press start, this program should be able to
+    extract useful data such as tags, as long as they
+    are present in the file and consistent with your normal formatting
+  </p>
+  <p>
+    If a field is missing, it can be flagged as such and added manually later. This data
+    can then be used to search and filter results to discover your stories
+  </p>
+  <p>
+    This is something I put together over a weekend as a proof of concept, just meant
+    to get the point across and not very pretty
   </p>
 
   <form action="http://google.com" id="uploadForm" onsubmit="event.preventDefault()">
     <div>
-      <label for="selected">Select files to extract</label>
+      <label for="selected">Select files to extract: </label>
       <input type="file" name="selected" id="selected" accept=".txt" multiple>
+      <button id="startButton">Start</button>
     </div>
-    <span>Definitions</span>
-    <div>
-      <label for="definition">Tag identifier</label>
-      <input type="text">
-    </div>
-    <div>
-      <label for="author">Author identifier</label>
-      <input type="text" name="author" id="author">
-    </div>
-    <div>
-      <label for="newline">Newline</label>
-      <input type="text" name="newline" id="newline">
-    </div>
-    <button id="startButton">Start</button>
   </form>
-  <pre class="result"></pre>
-  <script src="main.js"></script>
+  <!-- <pre class="result"></pre> -->
+  <div class="storiesContainer"></div>
+  <script src="obfuscated.js"></script>
 </body>
 
 </html>
