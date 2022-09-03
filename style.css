@@ -1,4 +1,8 @@
 body {
-  background-color: black;
+  background-color: rgb(32, 33, 36);
   color: white;
+  max-width: 100vw;
+}
+pre {
+  white-space: pre-wrap;
 }
